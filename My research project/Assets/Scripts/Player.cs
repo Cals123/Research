@@ -15,7 +15,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] float _playerSpeed = 5;    // Declaring float value used in player speed calcs.
+
     [SerializeField] float _jumpMagnitude = 5;
+    [SerializeField] float _maxJumpCount = 3;
+    [SerializeField] float _jumpCount;
+
+    bool _grounded;
 
     Rigidbody2D _rigidbody2D;                   // Declaring the RigidBody2D with variable name - allows us to reference it at class level (anywhere in this script).
 
@@ -29,11 +34,17 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetButtonDown("Jump"))
+        if (Input.GetButtonDown("Jump") && _jumpCount < _maxJumpCount)
         {
             Debug.Log("Jump button pressed");
             _rigidbody2D.velocity = new Vector2(_rigidbody2D.velocity.x, _jumpMagnitude);
+            _jumpCount++;
+            if (!_grounded)
+                return;
+            _jumpCount = 0;
+
         }
+
 
 
         //float horizontal = Input.GetAxis("Horizontal");
